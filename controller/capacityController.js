@@ -12,7 +12,7 @@ const createCapacity = async (req, res) => {
       price,
     });
 
-    capacity.user = product;
+    capacity.product = product;
     capacity.save();
 
     product.capacity.push(mongoose.Types.ObjectId(capacity._id));

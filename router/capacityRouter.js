@@ -7,10 +7,10 @@ const {
   deleteCapacity,
 } = require("../controller/capacityController");
 
-router.route("/:id/limit").get(showCapacity);
-router.route("/:id").get(allCapacity);
+router.route("/:product/:id/limit").get(showCapacity);
+router.route("/:product/:id").get(allCapacity);
 
-router.route("/:id/create").post(createCapacity);
-router.route("/:id/:capaty/delete").delete(deleteCapacity);
+router.route("/:product/:id/create").post(createCapacity);
+router.route("/:product/:id/:capacity/delete").delete(deleteCapacity);
 
 module.exports = router;

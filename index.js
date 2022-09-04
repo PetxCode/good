@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
   }
 });
 
+app.use("/api/brand", require("./router/brandRouter"));
 app.use("/api/product", require("./router/productRouter"));
 app.use("/api/color", require("./router/colorRouter"));
 app.use("/api/capacity", require("./router/capacityRouter"));

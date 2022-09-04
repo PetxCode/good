@@ -7,12 +7,13 @@ const {
   deleteProduct,
   updateProduct,
 } = require("../controller/productController");
-const upload = require("../utils/multer");
 
-router.route("/").get(getProducts);
-router.route("/create").post(upload, createProduct);
-router.route("/:id").get(getProduct);
-router.route("/:id").patch(updateProduct);
-router.route("/:id").delete(deleteProduct);
+router.route("/:id/limit").get(getProduct);
+router.route("/:id").get(getProducts);
+
+router.route("/:id/update").patch(updateProduct);
+
+router.route("/:id/create").post(createProduct);
+router.route("/:id/:brand/delete").delete(deleteProduct);
 
 module.exports = router;

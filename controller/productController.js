@@ -1,9 +1,15 @@
 const productModel = require("../model/productModel");
-const cloudinary = require("../utils/cloudinary");
+const brandModel = require("../model/brandModel");
+const mongoose = require("mongoose");
 
 const getProducts = async (req, res) => {
   try {
-    const product = await productModel.find().sort({ createdBy: -1 });
+    const product = await brandModel.findById(req.params.id).populate({
+      path: "product",
+      options: {
+        sort: { createdAt: -1 },
+      },
+    });
     res.status(200).json({ message: "All Product found", data: product });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -12,7 +18,13 @@ const getProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
   try {
-    const product = await productModel.findById(req.params.id);
+    const product = await brandModel.findById(req.params.id).populate({
+      path: "product",
+      options: {
+        limit: 3,
+        sort: { createdAt: -1 },
+      },
+    });
     res.status(200).json({ message: "Single Product found", data: product });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -21,8 +33,16 @@ const getProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   try {
-    const product = await productModel.findByIdAndRemove(req.params.id);
-    res.status(200).json({ message: "Product remove from DB", data: product });
+    const brand = await brandModel.findById(req.params.id);
+    const deleteData = await productModel.findByIdAndRemove(req.params.product);
+
+    brand.product.pull(deleteData);
+    brand.save();
+
+    res.status(200).json({
+      status: "deleted",
+      data: brand,
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -65,31 +85,30 @@ const updateProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
-    const {
-      productName,
-      productType,
-      batteryLife,
-      screen,
-      finger,
-      faceID,
-      network,
-      camera,
-    } = req.body;
-    const image = await cloudinary.uploader.upload(req.file.path);
+    const { model, batteryLife, screen, finger, faceID, network, camera } =
+      req.body;
 
-    const product = await productModel.create({
-      productName,
-      productType,
+    const product = await brandModel.findById(req.params.id);
+    const newProduct = new productModel({
+      model,
       batteryLife,
       screen,
       finger,
       faceID,
       network,
       camera,
-      image: image.secure_url,
-      imageID: image.public_id,
     });
-    res.status(200).json({ message: "Product created", data: product });
+
+    newProduct.product = product;
+    newProduct.save();
+
+    product.product.push(mongoose.Types.ObjectId(newProduct._id));
+    product.save();
+
+    res.status(201).json({
+      status: "product created successfully",
+      data: newProduct,
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

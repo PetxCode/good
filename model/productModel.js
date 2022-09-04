@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 
 const productModel = mongoose.Schema(
   {
-    productName: {
-      type: String,
-    },
-    productType: {
+    model: {
       type: String,
     },
     batteryLife: {
@@ -24,12 +21,6 @@ const productModel = mongoose.Schema(
       type: String,
     },
     camera: {
-      type: String,
-    },
-    image: {
-      type: String,
-    },
-    imageID: {
       type: String,
     },
 
