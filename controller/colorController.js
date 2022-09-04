@@ -11,7 +11,7 @@ const createColor = async (req, res) => {
       color,
     });
 
-    colorData.user = product;
+    colorData.product = product;
     colorData.save();
 
     product.color.push(mongoose.Types.ObjectId(colorData._id));

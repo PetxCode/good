@@ -13,7 +13,7 @@ const createImage = async (req, res) => {
       imageID: image.public_id,
     });
 
-    phone.user = product;
+    phone.product = product;
     phone.save();
 
     product.phoneImage.push(mongoose.Types.ObjectId(phone._id));
