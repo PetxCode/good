@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 app.use("/api/product", require("./router/productRouter"));
 app.use("/api/color", require("./router/colorRouter"));
 app.use("/api/capacity", require("./router/capacityRouter"));
+app.use("/api/image", require("./router/imageRouter"));
 
 app.listen(port, () => {
   console.log("Our server is now connected...!");

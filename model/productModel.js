@@ -40,6 +40,13 @@ const productModel = mongoose.Schema(
       },
     ],
 
+    phoneImage: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "images",
+      },
+    ],
+
     color: [
       {
         type: mongoose.Types.ObjectId,
